@@ -1,4 +1,4 @@
-# Stub submission WDL
+# Stub submit.wdl
 
 This version of the submit.wdl doesn't actually do anything.
 
