@@ -13,7 +13,7 @@ task GetInputs {
   Boolean record_http
   String pipeline_tools_version
   # this is a hack to force disabling the task level call-caching
-  String timestamp = "placeholder"
+  String timestamp
 
   command <<<
     export RECORD_HTTP_REQUESTS="${record_http}"
@@ -141,6 +141,8 @@ workflow AdapterOptimus {
   Boolean add_md5s = false
 
   String pipeline_tools_version = "v0.56.6"
+  # this is a hack to optionally force-disable the task level call-caching
+  String timestamp = "placeholder"
 
   call GetInputs as prep {
     input:
@@ -152,7 +154,8 @@ workflow AdapterOptimus {
       retry_timeout = retry_timeout,
       individual_request_timeout = individual_request_timeout,
       record_http = record_http,
-      pipeline_tools_version = pipeline_tools_version
+      pipeline_tools_version = pipeline_tools_version,
+      timestamp = timestamp
   }
 
   call Optimus.Optimus as analysis {
