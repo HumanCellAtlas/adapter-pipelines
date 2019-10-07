@@ -12,6 +12,8 @@ task GetInputs {
   Int? individual_request_timeout
   Boolean record_http
   String pipeline_tools_version
+  # this is a hack to force disabling the task level call-caching
+  String timestamp = "placeholder"
 
   command <<<
     export RECORD_HTTP_REQUESTS="${record_http}"
@@ -30,9 +32,6 @@ task GetInputs {
                 "${dss_url}")
 
     CODE
-
-    # hacky way to disable call-caching on the task level
-    date +%s > timestamp.txt
   >>>
   runtime {
     docker: "quay.io/humancellatlas/secondary-analysis-pipeline-tools:" + pipeline_tools_version
@@ -45,7 +44,6 @@ task GetInputs {
     Array[String] r1_fastq = read_lines("r1.txt")
     Array[String] r2_fastq = read_lines("r2.txt")
     File i1_file = "i1.txt"
-    String timestamp = read_string("timestamp.txt") # this is a hack to force disabling the task level call-caching
     Array[String] i1_fastq = if(ceil(size(i1_file)) == 0) then [] else read_lines(i1_file)
     Array[File] http_requests = glob("request_*.txt")
     Array[File] http_responses = glob("response_*.txt")
