@@ -30,6 +30,9 @@ task GetInputs {
                   "${dss_url}")
 
     CODE
+
+    # hacky way to disable call-caching on the task level
+    date +%s > timestamp.txt
   >>>
   runtime {
     docker: "quay.io/humancellatlas/secondary-analysis-pipeline-tools:" + pipeline_tools_version
