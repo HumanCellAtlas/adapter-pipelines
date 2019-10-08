@@ -139,7 +139,7 @@ workflow AdapterOptimus {
   Boolean record_http = false
   Boolean add_md5s = false
 
-  String pipeline_tools_version = "se-add-file-format"
+  String pipeline_tools_version = "v0.57.0"
   String timestamp = "a hack to optionally force-disable the task level call-caching"
 
   call GetInputs as prep {
