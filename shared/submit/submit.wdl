@@ -52,7 +52,6 @@ task create_submission {
   String analysis_file_version
   Array[Object] inputs
   Array[String] outputs
-  File format_map
   String submit_url
   Float? retry_multiplier
   Int? retry_max_interval
@@ -93,7 +92,6 @@ task create_submission {
       --analysis_file_version ${analysis_file_version} \
       --inputs_file ${write_objects(inputs)} \
       --outputs_file ${write_lines(outputs)} \
-      --format_map ${format_map} \
       --add_md5s ${add_md5s}
 
     # Now build the submission object
@@ -236,7 +234,6 @@ task confirm_submission {
 workflow submit {
   Array[Object] inputs
   Array[File] outputs
-  File format_map
   String submit_url
   String input_bundle_uuid
   String reference_bundle
@@ -288,7 +285,6 @@ workflow submit {
       submit_url = submit_url,
       inputs = inputs,
       outputs = outputs,
-      format_map = format_map,
       metadata_json = get_metadata.metadata,
       input_bundle_uuid = input_bundle_uuid,
       workflow_id = get_metadata.workflow_id,

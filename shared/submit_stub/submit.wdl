@@ -11,7 +11,6 @@ task submit_stub {
 workflow submit {
   Array[Object] inputs
   Array[File] outputs
-  File format_map
   String submit_url
   String input_bundle_uuid
   String reference_bundle
