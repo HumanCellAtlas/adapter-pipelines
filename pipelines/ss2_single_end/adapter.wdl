@@ -12,6 +12,8 @@ task GetInputs {
   Int? individual_request_timeout
   Boolean record_http
   String pipeline_tools_version
+  # this is a hack to force disabling the task level call-caching
+  String timestamp
 
   command <<<
     export RECORD_HTTP_REQUESTS="${record_http}"
@@ -30,9 +32,6 @@ task GetInputs {
                   "${dss_url}")
 
     CODE
-
-    # hacky way to disable call-caching on the task level
-    date +%s > timestamp.txt
   >>>
   runtime {
     docker: "quay.io/humancellatlas/secondary-analysis-pipeline-tools:" + pipeline_tools_version
@@ -41,7 +40,6 @@ task GetInputs {
     Array[File] http_requests = glob("request_*.txt")
     Array[File] http_responses = glob("response_*.txt")
     Object inputs = read_object("inputs.tsv")
-    String timestamp = read_string("timestamp.txt") # this is a hack to force disabling the task level call-caching
   }
 }
 
@@ -74,6 +72,7 @@ workflow AdapterSmartSeq2SingleCellUnpaired {
   Boolean add_md5s = false
 
   String pipeline_tools_version = "v0.56.6"
+  String timestamp = "a hack to optionally force-disable the task level call-caching"
 
   call GetInputs as prep {
     input:
@@ -85,7 +84,8 @@ workflow AdapterSmartSeq2SingleCellUnpaired {
       retry_timeout = retry_timeout,
       individual_request_timeout = individual_request_timeout,
       record_http = record_http,
-      pipeline_tools_version = pipeline_tools_version
+      pipeline_tools_version = pipeline_tools_version,
+      timestamp = timestamp
   }
 
   call ss2.SmartSeq2SingleCellUnpaired as analysis {
