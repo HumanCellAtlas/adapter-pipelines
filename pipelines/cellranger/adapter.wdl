@@ -128,7 +128,6 @@ workflow Adapter10xCount {
   String bundle_version
 
   # Submission
-  File format_map
   String dss_url
   String submit_url
   String method
@@ -236,7 +235,6 @@ workflow Adapter10xCount {
         analysis.mol_info_h5,
         analysis.web_summary
       ], output_files.outputs]),
-      format_map = format_map,
       submit_url = submit_url,
       cromwell_url = cromwell_url,
       input_bundle_uuid = bundle_uuid,

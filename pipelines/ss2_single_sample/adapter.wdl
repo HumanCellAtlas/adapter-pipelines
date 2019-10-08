@@ -49,7 +49,6 @@ workflow AdapterSmartSeq2SingleCell{
   String bundle_version
 
   # submission parameters
-  File format_map
   String dss_url
   String submit_url
   String method
@@ -176,7 +175,6 @@ workflow AdapterSmartSeq2SingleCell{
            ], analysis.group_results, analysis.zarr_output_files]
         )
       ),
-      format_map = format_map,
       submit_url = submit_url,
       cromwell_url = cromwell_url,
       input_bundle_uuid = bundle_uuid,
