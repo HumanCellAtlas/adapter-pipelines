@@ -141,8 +141,7 @@ workflow AdapterOptimus {
   Boolean add_md5s = false
 
   String pipeline_tools_version = "v0.56.6"
-  # this is a hack to optionally force-disable the task level call-caching
-  String timestamp = "placeholder"
+  String timestamp = "a hack to optionally force-disable the task level call-caching"
 
   call GetInputs as prep {
     input:
