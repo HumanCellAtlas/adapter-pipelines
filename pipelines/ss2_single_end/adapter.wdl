@@ -63,6 +63,7 @@ workflow AdapterSmartSeq2SingleCellUnpaired {
   Int? retry_timeout
   Int? individual_request_timeout
   String reference_bundle
+  String pipeline_version
 
   # Set runtime environment such as "dev" or "staging" or "prod" so submit task could choose proper docker image to use
   String runtime_environment
@@ -187,7 +188,7 @@ workflow AdapterSmartSeq2SingleCellUnpaired {
       record_http = record_http,
       pipeline_tools_version = pipeline_tools_version,
       add_md5s = add_md5s,
-      pipeline_version = analysis.pipeline_version,
+      pipeline_version = pipeline_version,
       # The bam files are by far the largest outputs. The extra 5 GB should easily cover everything else.
       disk_space = ceil(size(analysis.aligned_bam, "GB") + size(analysis.aligned_transcriptome_bam, "GB") + 5)
   }
