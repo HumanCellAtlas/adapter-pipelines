@@ -197,6 +197,10 @@ workflow AdapterOptimus {
         {
           "name": "ref_genome_fasta",
           "value": prep.ref_genome_fasta
+        },
+        {
+          "name": "chemistry",
+          "value": prep.chemistry
         }
       ],
       pipeline_tools_version = pipeline_tools_version
