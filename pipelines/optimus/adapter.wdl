@@ -45,6 +45,7 @@ task GetInputs {
     Array[String] r2_fastq = read_lines("r2.txt")
     File i1_file = "i1.txt"
     Array[String] i1_fastq = if(ceil(size(i1_file)) == 0) then [] else read_lines(i1_file)
+    String chemistry = read_string("chemistry.txt")
     Array[File] http_requests = glob("request_*.txt")
     Array[File] http_responses = glob("response_*.txt")
   }
@@ -140,7 +141,7 @@ workflow AdapterOptimus {
   Boolean record_http = false
   Boolean add_md5s = false
 
-  String pipeline_tools_version = "v0.57.0"
+  String pipeline_tools_version = "se-add-optimus-chemistry-param"
   String timestamp = "a hack to optionally force-disable the task level call-caching"
 
   call GetInputs as prep {
@@ -167,6 +168,7 @@ workflow AdapterOptimus {
       tar_star_reference = prep.tar_star_reference,
       annotations_gtf = prep.annotations_gtf,
       ref_genome_fasta = prep.ref_genome_fasta,
+      chemistry = prep.chemistry,
       fastq_suffix = fastq_suffix
   }
 
