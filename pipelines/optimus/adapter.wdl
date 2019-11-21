@@ -45,6 +45,7 @@ task GetInputs {
     Array[String] r2_fastq = read_lines("r2.txt")
     File i1_file = "i1.txt"
     Array[String] i1_fastq = if(ceil(size(i1_file)) == 0) then [] else read_lines(i1_file)
+    String chemistry = read_string("chemistry.txt")
     Array[File] http_requests = glob("request_*.txt")
     Array[File] http_responses = glob("response_*.txt")
   }
@@ -140,7 +141,7 @@ workflow AdapterOptimus {
   Boolean record_http = false
   Boolean add_md5s = false
 
-  String pipeline_tools_version = "v0.57.0"
+  String pipeline_tools_version = "v0.58.0"
   String timestamp = "a hack to optionally force-disable the task level call-caching"
 
   call GetInputs as prep {
@@ -167,6 +168,7 @@ workflow AdapterOptimus {
       tar_star_reference = prep.tar_star_reference,
       annotations_gtf = prep.annotations_gtf,
       ref_genome_fasta = prep.ref_genome_fasta,
+      chemistry = prep.chemistry,
       fastq_suffix = fastq_suffix
   }
 
@@ -195,6 +197,10 @@ workflow AdapterOptimus {
         {
           "name": "ref_genome_fasta",
           "value": prep.ref_genome_fasta
+        },
+        {
+          "name": "chemistry",
+          "value": prep.chemistry
         }
       ],
       pipeline_tools_version = pipeline_tools_version
@@ -206,7 +212,6 @@ workflow AdapterOptimus {
     input:
       inputs = inputs,
       outputs = flatten(
-        select_all(
           [[analysis.bam,
             analysis.matrix,
             analysis.matrix_row_index,
@@ -215,7 +220,6 @@ workflow AdapterOptimus {
             analysis.gene_metrics,
             analysis.cell_calls,
         ], analysis.zarr_output_files]
-        )
       ),
       submit_url = submit_url,
       cromwell_url = cromwell_url,
