@@ -212,7 +212,6 @@ workflow AdapterOptimus {
     input:
       inputs = inputs,
       outputs = flatten(
-        select_all(
           [[analysis.bam,
             analysis.matrix,
             analysis.matrix_row_index,
@@ -221,7 +220,6 @@ workflow AdapterOptimus {
             analysis.gene_metrics,
             analysis.cell_calls,
         ], analysis.zarr_output_files]
-        )
       ),
       submit_url = submit_url,
       cromwell_url = cromwell_url,
